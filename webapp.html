@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock, Paper, Scissors</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .choices button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #results {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    #score {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+
+    #winner {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 30px;
+      color: #2e8b57;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rock, Paper, Scissors</h1>
+  <div class="choices">
+    <button onclick="playRound('rock')">🪨 Rock</button>
+    <button onclick="playRound('paper')">📄 Paper</button>
+    <button onclick="playRound('scissors')">✂️ Scissors</button>
+  </div>
+
+  <div id="results"></div>
+  <div id="score">You: 0 | Computer: 0</div>
+  <div id="winner"></div>
+
+  <script>
+    let userScore = 0;
+    let computerScore = 0;
+    const resultsDiv = document.getElementById('results');
+    const scoreDiv = document.getElementById('score');
+    const winnerDiv = document.getElementById('winner');
+
+    function getComputerChoice() {
+      const choices = ['rock', 'paper', 'scissors'];
+      return choices[Math.floor(Math.random() * 3)];
+    }
+
+    function determineWinner(user, computer) {
+      if (user === computer) return 'draw';
+      if (
+        (user === 'rock' && computer === 'scissors') ||
+        (user === 'paper' && computer === 'rock') ||
+        (user === 'scissors' && computer === 'paper')
+      ) {
+        return 'user';
+      }
+      return 'computer';
+    }
+
+    function playRound(userChoice) {
+      if (userScore >= 5 || computerScore >= 5) return;
+
+      const computerChoice = getComputerChoice();
+      const winner = determineWinner(userChoice, computerChoice);
+
+      let roundResult = `You chose <b>${userChoice}</b>, computer chose <b>${computerChoice}</b>. `;
+
+      if (winner === 'draw') {
+        roundResult += "It's a draw!";
+      } else if (winner === 'user') {
+        userScore++;
+        roundResult += "You win this round!";
+      } else {
+        computerScore++;
+        roundResult += "Computer wins this round!";
+      }
+
+      resultsDiv.innerHTML = roundResult;
+      scoreDiv.innerHTML = `You: ${userScore} | Computer: ${computerScore}`;
+
+      if (userScore === 5 || computerScore === 5) {
+        winnerDiv.innerHTML = userScore === 5 ? "🎉 You won the game!" : "💻 Computer won the game!";
+      }
+    }
+  </script>
+</body>
+</html>
